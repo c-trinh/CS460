@@ -1,0 +1,20 @@
+# 1. What does the following statement do? ____Assemble ts.s to ts.o____
+arm-none-eabi-as -mcpu=arm926ej-s -g ts.s -o ts.o
+
+# 2. What does the following statement do? ____Link t.c to t.o file____
+arm-none-eabi-gcc -c -mcpu=arm926ej-s -g t.c -o t.o
+
+# 3. What does the following statement do?__Link t.o to t.elf + shows symbols in Elf__
+arm-none-eabi-ld -T t.ld ts.o t.o -o t.elf
+#arm-none-eabi-ld -T t.ld ts.o t.o strlib -o t.elf
+
+# 4. What does the following statement do?____Convert t.elf to t.bin_____
+arm-none-eabi-objcopy -O binary t.elf t.bin
+
+rm *.o *.elf
+
+echo ready to go?
+read dummy
+
+qemu-system-arm -M realview-pbx-a9 -m 128M -kernel t.bin -serial /dev/pts/6 -serial /dev/pts/18 -serial /dev/pts/19 -serial /dev/pts/20
+#-serial mon:stdio -serial /dev/pts/4 -serial /dev/pts/17

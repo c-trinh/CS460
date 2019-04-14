@@ -1,0 +1,17 @@
+Name: Cong Trinh
+ID: 11473850
+
+Q1: P0 cannot call kgetc() due to the fact P0 is the initial running process, which is set aside to handle all interrupts. Since kgetc() has similar logic with the RX interrupt handler, this could cause race conditions between the processes and interrupt handlers. Also, since P0 is the root proc, it makes it the only proc and would need a process to wakeup P0.
+
+Q2:
+Before any key is pressed:
+(6) Process_Code() -> (5) kgetc() -> (5) sleep(&hasData); -> (1) irq_handler_addr() -> (1) irq_handler: -> (2) bl  IRQ_handler -> (3) IRQ_handler -> (3) IRQ_handler
+Loops until an input/interuption is detected.
+
+When a key is pressed:
+(3)IRQ_handler -> (3) kbd_handler(); -> (4) kbd_handler() -> wakeup(&hasData); -> (2) ldmfd sp!,{r0-r12,pc}^ -> (5) hasData = 0;
+
+Q3: The KBD driver itself is able be accessed by both the main program and the KBD interrupt handler. A character input causes the process to sleep (in this case, sleeping on the data in P1). Oncethe kbd detects an interrupt from the user, it will prompt all processes to allow for kgetc() to put another proc to sleep for char input.
+
+Q4: Interrupt handlers should never call sleep() since sleeping on an interrupt handler could potentially cause an interrupted process to sleep. This could also potentially lock a process out of itself if the interrupted process has a lock set in place. It could also render interrupt handlers unusable or potentially terminate the process.
+
