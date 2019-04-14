@@ -1,6 +1,6 @@
 # CS460 - Operating Systems and Computer Architecture
 ## Development Enviroment / Setup:
-Development Software: (Ubuntu 18.04)
+Development Software: (Ubuntu 18.04)<br />
 (1). Intel x86 packages:
 
      sudo apt-get install bcc
