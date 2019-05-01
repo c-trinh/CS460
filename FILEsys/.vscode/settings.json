@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "libgen.h": "c",
+        "stdio.h": "c"
+    }
+}
